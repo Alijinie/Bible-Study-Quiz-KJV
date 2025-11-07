@@ -1,0 +1,553 @@
+/* --- 1. FONT IMPORT --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ===============================================
+  CYBERPUNK 2025+ AESTHETIC 
+  - Dark, futuristic palette with neon accents
+  - Advanced glassmorphism (layered blurs)
+  - Glowing borders and shadows
+  - Fluid, modern animations
+===============================================
+*/
+
+
+/* --- 2. CSS VARIABLES (THE PALETTE) --- */
+/* Default theme is DARK MODE */
+:root {
+  /* Futuristic Dark Colors */
+  --bg-primary: #0b091a; /* Deep midnight blue */
+  --bg-secondary: #120d2b; /* Dark sapphire */
+  --bg-tertiary: #1f1a3d; /* Hover/active purple */
+  --text-primary: #e8e8ff; /* Cool, light lavender */
+  --text-secondary: #a0a0c0; /* Muted lavender */
+  --text-muted: #6a6a8f; /* Grey-purple */
+  
+  /* Glass & Borders */
+  --border-color: rgba(255, 255, 255, 0.1); /* Subtle glass edge */
+  --border-color-hover: rgba(255, 255, 255, 0.25);
+  
+  /* Neon Accents */
+  --primary-color: #00f0ff; /* Neon Cyan */
+  --primary-accent: #f000ff; /* Neon Magenta */
+  --text-on-primary: #0b091a; /* Dark text for neon buttons */
+  
+  /* Status Colors */
+  --color-correct: #00ff80; /* Neon Green */
+  --color-incorrect: #ff4040; /* Neon Red */
+  
+  /* Glassmorphic Backgrounds */
+  --bg-glass-primary: rgba(18, 13, 43, 0.75); /* 75% dark sapphire */
+  --bg-glass-secondary: rgba(31, 26, 61, 0.6); /* 60% hover purple */
+
+  /* Shadows & Glows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-glow-primary: 0 0 15px rgba(0, 240, 255, 0.3), 0 0 20px rgba(0, 240, 255, 0.2);
+  --shadow-glow-accent: 0 0 15px rgba(240, 0, 255, 0.3), 0 0 20px rgba(240, 0, 255, 0.2);
+  --shadow-glow-correct: 0 0 15px rgba(0, 255, 128, 0.4);
+  --shadow-glow-incorrect: 0 0 15px rgba(255, 64, 64, 0.4);
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+
+  /* Transitions */
+  --transition-speed: 0.3s;
+  --transition-ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Light "Tech" Mode (Optional, swapped from dark) */
+body.light {
+  --bg-primary: #f0f4f8;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e6ecf0;
+  --text-primary: #0b091a;
+  --text-secondary: #3a3a5f;
+  --text-muted: #6a6a8f;
+  
+  --border-color: rgba(0, 0, 0, 0.1);
+  --border-color-hover: rgba(0, 0, 0, 0.2);
+
+  --primary-color: #7000ff; /* Vibrant Purple */
+  --primary-accent: #007bff; /* Bright Blue */
+  --text-on-primary: #ffffff;
+  
+  --color-correct: #19a030;
+  --color-incorrect: #d92030;
+
+  --bg-glass-primary: rgba(255, 255, 255, 0.75);
+  --bg-glass-secondary: rgba(240, 244, 248, 0.7);
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-glow-primary: 0 0 15px rgba(112, 0, 255, 0.3);
+  --shadow-glow-accent: 0 0 15px rgba(0, 123, 255, 0.3);
+  --shadow-glow-correct: 0 0 15px rgba(25, 160, 48, 0.4);
+  --shadow-glow-incorrect: 0 0 15px rgba(217, 32, 48, 0.4);
+}
+
+/* --- 3. GLOBAL RESET & BODY --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Keyframes for animated background and fade-in */
+@keyframes animatedGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes subtleFadeInUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-primary);
+  
+  /* Animated Gradient Background */
+  background: linear-gradient(
+    135deg, 
+    var(--bg-primary), 
+    var(--bg-secondary), 
+    var(--bg-primary)
+  );
+  background-size: 400% 400%;
+  animation: animatedGradient 20s ease infinite;
+  
+  background-attachment: fixed;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Text Selection */
+::selection {
+  background: var(--primary-accent);
+  color: var(--text-on-primary);
+}
+
+/* --- 4. HEADER & THEME TOGGLE --- */
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  
+  /* Glassmorphism Header */
+  background: var(--bg-glass-primary);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: all var(--transition-speed) var(--transition-ease);
+}
+h2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+#themeToggle {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 0.5rem;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--primary-color); /* Neon icon */
+  transition: all var(--transition-speed) var(--transition-ease);
+}
+
+#themeToggle:hover {
+  background: var(--primary-color);
+  color: var(--text-on-primary);
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: var(--shadow-glow-primary);
+}
+
+/* --- 5. NAVIGATION --- */
+nav {
+  display: flex;
+  
+  /* Glassmorphism Nav */
+  background: var(--bg-glass-secondary);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  
+  padding: 0.5rem;
+  gap: 0.5rem;
+  overflow-x: auto; /* For mobile */
+}
+
+nav button {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 600; /* Bolder text */
+  color: var(--text-secondary);
+  transition: all var(--transition-speed) var(--transition-ease);
+  white-space: nowrap;
+  
+  /* Subtle border for definition */
+  border: 1px solid transparent; 
+}
+
+nav button:hover {
+  background: transparent;
+  color: var(--primary-accent);
+  /* Glowing bottom border effect */
+  box-shadow: inset 0 -2px 0 0 var(--primary-accent);
+}
+
+nav button.active {
+  /* Dual-color gradient for active state */
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-accent));
+  color: var(--text-on-primary);
+  font-weight: 700;
+  box-shadow: var(--shadow-glow-accent);
+}
+
+/* --- 6. MAIN APP CONTAINER --- */
+#app {
+  padding: 1.5rem 1rem 4rem 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+  
+  /* Page load animation */
+  animation: subtleFadeInUp 0.8s var(--transition-ease) forwards;
+  animation-delay: 0.1s;
+  opacity: 0;
+}
+
+/* --- 7. GENERIC FORMS (Inputs, Buttons) --- */
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  
+  /* Futuristic Input Style */
+  background: rgba(0,0,0,0.2); /* Dark, inset look */
+  backdrop-filter: blur(5px);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-speed) var(--transition-ease);
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  
+  /* Glowing Focus Ring */
+  box-shadow: 0 0 15px var(--primary-color), 
+              0 0 0 1px var(--primary-color);
+}
+
+button {
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-speed) var(--transition-ease);
+  -webkit-tap-highlight-color: transparent; /* Disable mobile tap flash */
+}
+
+/* Primary "Neon Gradient" button style */
+#loadChapter, #searchBtn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: var(--text-on-primary);
+  border: none;
+  
+  /* Animated Gradient */
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-accent));
+  background-size: 200% 200%;
+  transition: all 0.4s ease;
+}
+
+#loadChapter:hover, #searchBtn:hover {
+  background-position: 100% 0; /* Shift gradient on hover */
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-glow-accent);
+}
+
+/* --- 8. READER VIEW --- */
+.reader-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem; /* Increased gap */
+  margin-bottom: 1.5rem;
+}
+.reader-controls select { flex: 3 1 200px; }
+.reader-controls input { flex: 1 1 80px; }
+.reader-controls button { flex: 1 1 120px; }
+
+/* Verse Card - Glass Panel */
+.verse {
+  margin: 0.75rem 0;
+  padding: 1.25rem; /* More padding */
+  
+  /* Glass Panel Effect */
+  background: var(--bg-glass-primary);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  
+  line-height: 1.7;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.verse:hover {
+  transform: translateY(-3px) scale(1.01);
+  border-color: var(--border-color-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.verse-num {
+  font-weight: 700;
+  color: var(--primary-color);
+  font-size: 0.9rem;
+  padding-top: 0.1rem;
+  
+  /* Subtle glow */
+  text-shadow: 0 0 8px var(--primary-color);
+}
+
+.bookmark-btn {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: var(--text-secondary);
+  transition: all var(--transition-speed) var(--transition-ease);
+  align-self: flex-start;
+}
+
+.bookmark-btn:hover {
+  color: var(--primary-accent);
+  transform: scale(1.2);
+  /* Use filter for a clean icon glow */
+  filter: drop-shadow(0 0 5px var(--primary-accent));
+}
+
+.bookmark-btn[disabled],
+.bookmark-btn:disabled {
+  color: var(--primary-accent);
+  filter: drop-shadow(0 0 5px var(--primary-accent));
+  transform: none;
+  cursor: default;
+  opacity: 0.8;
+}
+
+/* --- 9. QUIZ VIEW --- */
+.quiz button.option {
+  display: block;
+  width: 100%;
+  margin: 0.75rem 0;
+  padding: 1rem;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 500;
+  
+  /* Glass Panel Button */
+  background: var(--bg-glass-primary);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.quiz button.option:not(:disabled):hover {
+  border-color: var(--primary-accent);
+  background: var(--bg-glass-secondary);
+  transform: translateX(5px);
+  box-shadow: 0 0 10px var(--primary-accent);
+}
+
+/* Glowing feedback states */
+.correct {
+  background: var(--color-correct) !important;
+  border-color: var(--color-correct) !important;
+  color: var(--text-on-primary) !important;
+  font-weight: 700;
+  box-shadow: var(--shadow-glow-correct) !important;
+}
+
+.incorrect {
+  background: var(--color-incorrect) !important;
+  border-color: var(--color-incorrect) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  box-shadow: var(--shadow-glow-incorrect) !important;
+}
+
+/* --- 10. BOOKMARKS & SEARCH RESULTS --- */
+.search-view {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.search-view input { flex: 1 1 300px; }
+.search-view button { flex: 0 1 auto; }
+
+#searchResults, .bookmarks-list {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Card for bookmarks and search results */
+.bookmark,
+#searchResults p {
+  /* Glass Panel Card */
+  background: var(--bg-glass-primary);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  
+  /* Neon Accent Border */
+  border-left: 3px solid var(--primary-color);
+  
+  box-shadow: var(--shadow-sm);
+  line-height: 1.6;
+  transition: all var(--transition-speed) var(--transition-ease);
+}
+
+.bookmark:hover,
+#searchResults p:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-md);
+  border-left-color: var(--primary-accent);
+}
+
+#searchResults p strong {
+  color: var(--primary-color);
+  display: block;
+  margin-bottom: 0.25rem;
+  text-shadow: 0 0 5px var(--primary-color);
+}
+
+.bookmark strong {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  text-shadow: 0 0 5px var(--primary-color);
+}
+.bookmark p { margin-bottom: 0.25rem; }
+.bookmark small {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* --- 11. RESPONSIVE --- */
+@media (max-width: 600px) {
+  nav {
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 0.5rem;
+  }
+  
+  nav button {
+    flex: 0 0 auto;
+  }
+
+  .reader-controls, .search-view {
+    flex-direction: column;
+  }
+
+  #app {
+    padding-top: 1rem;
+  }
+}
+
+/* --- 12. FUTURISTIC ADDITIONS --- */
+
+/* Themed Scrollbar (WebKit-based browsers) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-accent);
+  box-shadow: var(--shadow-glow-accent);
+}
+
+/* Scroll-Driven Fade-In Animations (for modern browsers) */
+/* Keyframe for the scroll-in animation */
+@keyframes fadeInOnScroll {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply animation to list/card items */
+.verse,
+.quiz button.option,
+.bookmark,
+#searchResults p {
+  /* 1. Link the animation, but pause it */
+  animation: fadeInOnScroll 0.5s var(--transition-ease) forwards;
+  animation-play-state: paused;
+
+
+  /* 2. Tell the animation to run based on scroll position */
+  /* This is a modern CSS feature and will be ignored by older browsers */
+  animation-timeline: view();
+  
+  /* 3. Define *when* to run it:
+     Starts when the element is 0% visible (entry 0%)
+     Ends when it's 30% visible (entry 30%) */
+  animation-range: entry 0% entry 30%;
+}
+#bookSelect {
+  background-color: #120d2b;
+}
